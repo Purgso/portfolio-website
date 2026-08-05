@@ -8,6 +8,6 @@ export const latestPosts = (
   })
 ).sort(
   (a, b) =>
-    new Date(b.data.publishDate).valueOf() -
-    new Date(a.data.publishDate).valueOf()
+    (b.data.priority || 0) - (a.data.priority || 0) ||
+    new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
 );
