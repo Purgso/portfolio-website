@@ -3,22 +3,29 @@ import Layout from "@/layouts/Layout.astro";
 import Container from "@/components/container.astro";
 import Pagetitle from "@/components/pagetitle.astro";
 import Link from "@/components/ui/link.astro";
-
-
+import { Image } from "astro:assets";
+import headshot from "../assets/headshot.jpg";
 ---
 
 <Layout title="About">
   <Container>
     <Pagetitle>
-      <Fragment slot="title">About</Fragment>
-      <Fragment slot="desc">We are a small passionate team.</Fragment>
+      <Fragment slot="title">About Me</Fragment>
+      <Fragment slot="desc">subtitle placeholder text</Fragment>
     </Pagetitle>
+
+    <div class="relative size-72 mx-auto overflow-hidden rounded-full mt-12">
+      <Image
+        src={headshot}
+        format="avif"
+        alt="Jakob Spurgat"
+        class="h-full w-full object-cover object-[58%_50%] scale-[2.6]"
+      />
+    </div>
 
     <div class="mx-auto max-w-xl text-center mt-14">
       <p class="text-lg leading-relaxed text-gray-600 dark:text-gray-400">
-        We're a multi-cultural team from around the world! We come from diverse
-        backgrounds, bringing different personalities, experiences and skills to
-        the job. This is what makes our team so special.
+        I’m a mechanical and electrical engineer who enjoys learning how things work and putting that knowledge into practice. I tend to learn best by taking on hands-on projects that challenge me to solve real problems and develop new skills along the way. My interests span both hardware and software, ranging from cars to robotics to video games. I created this website to show some of those projects, the problems I encountered, and what I learned while solving them.
       </p>
       <div class="mt-8">
         <Link href="/contact" style="primary">Get in touch</Link>
