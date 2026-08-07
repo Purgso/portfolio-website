@@ -1,6 +1,6 @@
 ---
 import Container from "@/components/container.astro";
-import logoImage from "@/assets/logo.svg";
+import logoImage from "@/assets/logo-light.svg";
 import darkLogo from "@/assets/logo-dark.svg";
 import { Image } from "astro:assets";
 
@@ -38,7 +38,7 @@ const rightmenu: Menu[] = [
   },
   {
     label: "Resume",
-    href: "https://web3templates.com/templates/stablo-minimal-blog-website-template",
+    href: "",
     external: true,
   },
 ];
@@ -63,11 +63,11 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
       </div>
 
       <div class="flex items-center justify-between w-full md:w-auto">
-        <a class="w-28 dark:hidden" href="/">
+        <a class="w-36 dark:hidden" href="/">
           <Image src={logoImage} alt="Logo" />
         </a>
 
-        <a class="hidden w-28 dark:block" href="/">
+        <a class="hidden w-36 dark:block" href="/">
           <Image src={darkLogo} alt="Logo" />
         </a>
 
