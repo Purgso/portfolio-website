@@ -8,7 +8,7 @@ import icon from "astro-icon";
 import { remarkReadingTime } from "./src/utils/all";
 
 export default defineConfig({
-  site: "https://stablo-astro.web3templates.com",
+  site: "https://Purgso.github.io",
   markdown: {
     remarkPlugins: [remarkReadingTime],
     rehypePlugins: ["rehype-plugin-image-native-lazy-loading"],
