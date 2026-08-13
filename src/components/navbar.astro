@@ -3,43 +3,54 @@ import Container from "@/components/container.astro";
 import logoImage from "@/assets/logo-light.svg";
 import darkLogo from "@/assets/logo-dark.svg";
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
 interface Menu {
   label: string;
   href: string;
   external?: boolean;
-  badge?: string;
+  icon?: string;
 }
 const leftmenu: Menu[] = [
   {
     label: "Home",
     href: "/",
+    icon: "heroicons:home",
   },
   {
     label: "About",
     href: "/about",
+    icon: "heroicons:user",
   },
   {
     label: "Contact",
     href: "/contact",
+    icon: "heroicons:envelope",
   },
 ];
 
 const rightmenu: Menu[] = [
-  {
+  /*{
     label: "Archive",
     href: "/archive",
+  },*/
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/jakob-spurgat-7a065366/",
+    external: true,
+    icon: "mdi:linkedin",
   },
   {
     label: "Github",
     href: "https://github.com/Purgso",
     external: true,
-    badge: "new",
+    icon: "mdi:github",
   },
   {
     label: "Resume",
     href: "",
-    external: true,
+    external: false,
+    icon: "heroicons:arrow-down-tray",
   },
 ];
 
@@ -55,7 +66,8 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           leftmenu.map((item) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              class="flex items-center gap-1 px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              {item.icon && <Icon class="w-4 h-4" name={item.icon} />}
               {item.label}
             </a>
           ))
@@ -99,7 +111,8 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           rightmenu.map((item) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              class="flex items-center gap-1 px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
+              {item.icon && <Icon class="w-4 h-4" name={item.icon} />}
               {item.label}
             </a>
           ))
@@ -113,9 +126,10 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           mobilemenu.map((item, index) => (
             <a
               href={item.href}
-              class="px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500"
+              class="flex items-center gap-1 px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500"
               target={item.external ? "_blank" : ""}
               rel={item.external ? "noopener" : ""}>
+              {item.icon && <Icon class="w-4 h-4" name={item.icon} />}
               {item.label}
             </a>
           ))
