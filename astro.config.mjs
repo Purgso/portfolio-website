@@ -14,5 +14,5 @@ export default defineConfig({
     rehypePlugins: ["rehype-plugin-image-native-lazy-loading"],
     extendDefaultPlugins: true,
   },
-  integrations: [tailwind(), mdx(), sitemap(), icon()],
+  integrations: [tailwind(), mdx(), sitemap(), icon({include: {mdi: ['linkedin', 'github']}})],
 });
