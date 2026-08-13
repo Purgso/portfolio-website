@@ -7,12 +7,19 @@ import icon from "astro-icon";
 
 import { remarkReadingTime } from "./src/utils/all";
 
+const site = process.env.SITE_URL ?? "https://jakob.spurgat.net";
+
 export default defineConfig({
-  site: "https://jakob.spurgat.net",
+  site,
   markdown: {
     remarkPlugins: [remarkReadingTime],
     rehypePlugins: ["rehype-plugin-image-native-lazy-loading"],
     extendDefaultPlugins: true,
   },
-  integrations: [tailwind(), mdx(), sitemap(), icon({include: {mdi: ['linkedin', 'github']}})],
+  integrations: [
+    tailwind(),
+    mdx(),
+    sitemap(),
+    icon({include: {mdi: ["linkedin", "github"]}})
+  ],
 });
