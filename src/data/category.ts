@@ -21,4 +21,11 @@ export const categories: Props[] = [
     description:
       "Projects that involve programming, coding, and software development",
   },
+  {
+    title: "Technology",
+    slug: "technology",
+    color: "green",
+    description:
+      "Projects that involve technology, gadgets, and innovations",
+  },
 ];
