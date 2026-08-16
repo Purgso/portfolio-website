@@ -48,9 +48,9 @@ const rightmenu: Menu[] = [
   },
   {
     label: "Resume",
-    href: "",
-    external: false,
-    icon: "heroicons:arrow-down-tray",
+    href: "/Jakob Spurgat Resume.pdf",
+    external: true,
+    icon: "heroicons:document-text",
   },
 ];
 
@@ -66,6 +66,8 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           leftmenu.map((item) => (
             <a
               href={item.href}
+              target={item.external ? "_blank" : ""}
+              rel={item.external ? "noopener noreferrer" : ""}
               class="flex items-center gap-1 px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
               {item.icon && <Icon class="w-4 h-4" name={item.icon} />}
               {item.label}
@@ -111,6 +113,8 @@ const mobilemenu: Menu[] = [...leftmenu, ...rightmenu];
           rightmenu.map((item) => (
             <a
               href={item.href}
+              target={item.external ? "_blank" : ""}
+              rel={item.external ? "noopener noreferrer" : ""}
               class="flex items-center gap-1 px-5 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500">
               {item.icon && <Icon class="w-4 h-4" name={item.icon} />}
               {item.label}
