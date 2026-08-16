@@ -7,13 +7,12 @@ import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
 import { CollectionEntry, getCollection } from "astro:content";
 
-import type { Author } from "@/data/authors";
 import type { Category } from "@/data/category";
 
-type Props = CollectionEntry<"blog">;
+type Props = CollectionEntry<"project">;
 
 export async function getStaticPaths() {
-  const blog = await getCollection("blog");
+  const blog = await getCollection("project");
 
   return blog.map((post) => ({
     params: { slug: post.slug },

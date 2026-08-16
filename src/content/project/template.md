@@ -2,7 +2,7 @@
 title: "Title Goes Here"
 excerpt: "Some description"
 publishDate: "2024-05-29T11:39:36.050Z"
-image: "../../assets/blog/blog1.jpg"
+image: "../../assets/project/blog1.jpg"
 # category slug: choose from "./src/data/category.js"
 category: "technology"
 # remove this line to publish
