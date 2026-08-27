@@ -1,0 +1,97 @@
+---
+title: "Document Scanner App"
+excerpt: "Making a document scanner to automate data entry"
+publishDate: "2019-01-06T12:00:00.000"
+image: "../../assets/project/document-scanner/header_image.jpg"
+category: "programming"
+tags: [Python, OpenCV]
+priority: 2
+---
+
+import { Picture } from "astro:assets";
+import bwphoto from "../../assets/project/document-scanner/bw_image.jpg";
+import contourimage from "../../assets/project/document-scanner/image_with_contours.jpg";
+import gridimage from "../../assets/project/document-scanner/grid_image.jpg";
+import flatimage from "../../assets/project/document-scanner/flattened.jpg";
+import drawimage from "../../assets/project/document-scanner/draw_image.jpg";
+
+In FIRST Robotics, understanding how well other teams are doing at competition is critical for strategizing among top performing teams.  As the team I was mentoring improved over the years, it became clear that we could benefit from having detailed statistics at our competitions.  Gathering the data in real time proved to be more of a challenge than we anticipated.  Students recording on their phones was unreliable due to limited battery life and data use, and we didn't have the budget to give the students tablets.  Paper was quick and easy to use, but it required multiple people to spend the entire competition manually entering the data, which was time-consuming and prone to errors.  This led to the idea of automating the data collection process using a document scanner app.  One student could take a photo of each paper and upload it to a Google Drive folder.  The app would scan the folder for new images, download them, scrape the data, and dump it to a Google Sheet for further analysis.
+
+<Picture
+    src={bwphoto}
+    alt="Black and white photo with correct contour"
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    quality={80}
+    loading="lazy"
+    class="w-full h-auto"
+/>
+
+The first step in reading the paper is to find the paper.  Initially I tried looking for the edges but this turned out to be too unreliable.  Oftentimes there wasn't enough contrast between the paper and the background, or a corner was cut off in the image.  Instead, it was much more reliable to look for the black border around the data.  So I turned up the contrast to make the black border stand out, looked for all the dark regions, and searched through them to figure out which one is the paper.  The image above shows the paper with the contrast turned up and the correct border highlighted in blue.
+
+<Picture
+    src={contourimage}
+    alt="Image with contours drawn"
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    quality={80}
+    loading="lazy"
+    class="w-full h-auto"
+/>
+
+This region had one major problem - the pencil mark at the bottom right was included.  This was a common enough issue that I had to develop an algorithm to detect and remove such protrusions.
+
+Once the protrusions were removed, the app would count the edges.  If there was any number other than four, it meant that region couldn't be the correct one.  The image above shows the paper with the clean border drawn in green and the four-sided border in red.
+
+Having four edges didn't guarantee that the region was the correct one though; I still needed one last check to confirm that it was indeed the paper.  For this, I added the "818" insignia.  It was part of the team's branding so it didn't look out of place and its distinct shape was a reliable way to confirm that the region was the correct one.  If the insignia was detected in the expected spot, it meant that the region was indeed the paper.
+
+The full pipeline was the following:
+1. Increase contrast to highlight the black border.
+2. Detect all dark regions and pick one.
+3. Remove protrusions from the selected region.
+4. Count edges and ensure the region has exactly four sides.
+5. Verify the presence of the "818" insignia to confirm the paper.
+6. If the region failed any of the previous checks, discard it and go back to step 2.
+7. Digitally flatten the paper.
+8. Correct for perspective distortion.
+
+<Picture
+    src={gridimage}
+    alt="Gray image with grid overlaid to follow the curve of the paper"
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    quality={80}
+    loading="lazy"
+    class="w-full h-auto"
+/>
+
+Even though the paper had been detected, it still wasn't ready for data extraction.  Perspective distortion was easy enough to correct because OpenCV already provides functions for this.  The difficult part was dealing with curves and folds in the paper which could distort different areas of the paper unequally.  I tried putting a sheet of lexan over the page to hold it flat but it created too much glare.  Instead, I developed an algorithm to digitally flatten the paper by estimating the distortions and compensating for them.  The estimated distortion is represented with the grid in the image above.
+
+<Picture
+    src={flatimage}
+    alt="Flattened image of the paper"
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    quality={80}
+    loading="lazy"
+    class="w-full h-auto"
+/>
+
+Now that the app could finally get a clean, flattened paper in which to read data, it needed data to read.  Based on conversations with the other mentors we agreed upon the following types of input: True/False, 0/1/2 "double bubble," two types of multiple choice, and numbers.  I put all the information for the type, location, size, output, and database column of each input into a config file.  This turned out to be a great idea as we ended up changing the layout many times each season, and having a config file meant I could update the app without having to modify code.
+
+<Picture
+    src={drawimage}
+    alt="Flattened image with bubbles marked"
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    quality={80}
+    loading="lazy"
+    class="w-full h-auto"
+/>
+
+This program was a key tool in furthering the success of the team.  There were many times where the team was able to make quick strategy decisions based on the data extracted from the scanned documents.  After a few years of continued success, the team had grown enough that it could afford tablets for the students to use for data entry, and the app was shut down.
