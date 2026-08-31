@@ -5,11 +5,14 @@ import Label from "@/components/ui/label.astro";
 import { categories } from "@/data/category";
 import Layout from "@/layouts/Layout.astro";
 import { getFormattedDate } from "@/utils/all";
-import { CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 import type { Category } from "@/data/category";
 
-type Props = CollectionEntry<"project">;
+type Props = {
+  post: CollectionEntry<"project">;
+};
 
 export async function getStaticPaths() {
   const blog = await getCollection("project");
@@ -33,7 +36,7 @@ const category = categories.find(
 <Layout
   title={post.data.title}
   desc={post.data.excerpt}
-  ogimage={post.data.image}>
+  ogimage={post.data.image.src}>
   <Container>
     <div class="max-w-screen-md mx-auto">
       <div class="text-center">
@@ -51,7 +54,7 @@ const category = categories.find(
             <div class="flex items-center space-x-2 text-sm">
               <time
                 class="text-gray-500 dark:text-gray-400"
-                datetime={post.data.publishDate}>
+                datetime={getFormattedDate(post.data.publishDate)}>
                 {getFormattedDate(post.data.publishDate)}
               </time>
               <!-- <span>
@@ -74,10 +77,10 @@ const category = categories.find(
           widths={[200, 400, 800]}
           sizes="(max-width: 640px) 90vw, 480px"
           width={1024}
-          heignt={576}
+          height={576}
           alt="Thumbnail"
           loading="eager"
-          class="w-full"
+          class="w-full h-full object-cover object-center"
         />
       )
     }
