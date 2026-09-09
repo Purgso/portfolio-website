@@ -18,6 +18,18 @@ module.exports = {
         "2/3": "2 / 3",
         "9/16": "9 / 16",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            "code::before": {
+              content: "none",
+            },
+            "code::after": {
+              content: "none",
+            },
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
