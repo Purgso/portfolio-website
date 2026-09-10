@@ -12,7 +12,7 @@ import { Picture } from "astro:assets";
 import human_input_pypi_screenshot from "../../assets/project/human-input/human-input_pypi.png";
 import human_input_visualization from "../../assets/project/human-input/human-input_visualization.png";
 
-Most input-automation libraries are designed to perform actions instantly. This can be useful when making code to complete a task as quickly as possible but can result in unpredictable behavior when actions are performed faster than a program can process them.  Some libraries try to address this situation by allowing a specified duration for each command. They still execute the same precise, robotic actions, just slower. Slowing down inputs in this way can help prevent a program from getting overloaded but it still requires every timing to be specified manually and fails to capture the smooth nature of real human motion.
+Most input-automation libraries are designed to perform actions instantly. This can be useful when making code to complete a task as quickly as possible but can result in unpredictable behavior when actions are performed faster than a program can process them.  Some libraries try to address this situation by allowing a specified duration for each command. They still execute the same precise, robotic actions, just slower. Slowing down inputs in this way can help prevent a program from getting overloaded, but it still requires every timing to be specified manually and fails to capture the smooth nature of real human motion.
 
 I created **Human Input** to add a layer of realistic movement and timing to Python automation while remaining simple to use. The library is built on top of the familiar [`mouse`](https://github.com/boppreh/mouse) and [`keyboard`](https://github.com/boppreh/keyboard) packages, preserving their core interfaces while adding generated mouse trajectories, naturally timed clicks, and keyboard events modeled from real keystroke data.
 
@@ -33,11 +33,11 @@ The project is open source and available through [GitHub](https://github.com/Pur
 
 Moving a cursor naturally involves more than drawing a curved line between two points. People generally make a fast initial movement toward a target, followed by one or more smaller corrections as they approach it. The time required also depends on both the distance to the target and the size of the area being selected.
 
-Human Input estimates movement duration using **Fitts’s law**, a model of the speed–accuracy tradeoff in human movement. A distant, narrow target takes longer to acquire than a nearby, wide one-even if both movements cover similar-looking paths.
+Human Input estimates movement duration using **Fitts’s law**, a model of the speed–accuracy tradeoff in human movement. A distant or small target takes longer to get to than a nearby or large one, even if their paths look similar.
 
 The library then:
 
-* Selects randomized intermediate and final points within the target regions
+* Moves the intermediate and final points to random positions within the target regions
 * Adds small corrective movements near the destination
 * Joins the points using smooth spline curves
 * Generates overlapping, lognormal velocity profiles for each portion of the movement
