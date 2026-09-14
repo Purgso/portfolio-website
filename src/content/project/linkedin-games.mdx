@@ -1,0 +1,61 @@
+---
+title: "LinkedIn Game Bots"
+excerpt: "Using Python to automate LinkedIn games"
+publishDate: "2026-09-10T12:00:00.000"
+image: "../../assets/project/linkedin-games/sudoku-win.png"
+category: "programming"
+tags: [python, automation]
+priority: 4
+---
+
+This page is actively being worked on.  I plan on adding videos of each solver in the next day or two.
+
+Puzzle games are my favorite type of games to automate. I find the process of learning how to solve a puzzle and then picking apart my thoughts so I can break them down into steps a computer can follow to be genuinely fun and engaging. When my wife showed me that LinkedIn had a few daily games, I thought it would be a good little challenge to automate the process of reading them, solving them, and entering the solution.
+
+Reading each game was fairly straightforward with computer vision.  Using tools like color thresholding and contour detection, I could determine the size and location of the game on screen, count the number of rows and columns, and read the contents of each cell.  For games like Sudoku and Wend, I used OCR to read the letters and numbers.
+
+Entering the solution was similarly easy.  Using the locations of each cell that were determined when the game was read, the program simply had to perform mouse and keyboard controls to enter the solution.  I'm not sure what level of bot detection LinkedIn employs for these games, but I wasn't willing to risk my account for a quick project.  Instead I created the 'human-input' python library. This library allows for simulating human-like interactions with the computer, making it safer to automate tasks without triggering bot detection mechanisms.
+
+### Sudoku
+
+Sudoku is an interesting game to make a solver for because theory and practice differ quite dramatically.  In theory, sudoku puzzles only have one solution and can be solved without having to guess and check.  There are a finite set of strategies that can be applied to solve any puzzle logically.  In practice, however, this is far easier said than done.
+
+The Sudoku Wiki lists 42 strategies, divided into 5 groups: basic, tough, diabolical, extreme, and last resort.  Learning every strategy well enough to program them into the solver could take months of my free time.  A brute-force solver would be inefficient and go against the spirit of the game.  If I only implement some of the strategies, where do I draw the line?
+
+One common method for benchmarking algorithms is time.  If two algorithms accomplish the same task, the faster one is the better one.  If I apply this principle to my Sudoku solver, I should only implement strategies that improve the solving speed.  Fortunately Sudoku is a thoroughly studied game so the time it takes a computer to evaluate each strategy is documented.  Of the 42 strategies, how many of them are faster than brute force?  One of them.  Only the most basic, beginner-level strategy provides any benefit over guess and check.  This strategy, called singles, has two parts: naked singles and hidden singles.  Naked singles occur when a cell has only one possible candidate left, while hidden singles are when a candidate appears only once in a row, column, or block.  
+
+It was a long process to research all the different strategies, only to end up making a solver that uses brute-force as its primary method.  While it may not be the most elegant solution, it is quick and effective.  For the 6x6 mini Sudoku puzzles used in the LinkedIn games, a depth first search with the singles strategy was consistently able to find the solution in 10 ms.
+
+### Tango
+
+The process for solving tango was very similar to Sudoku.  Apply basic strategies until stuck, then make a guess and keep going.  
+
+The first rule of tango is you can't have three suns or moons in a row. I implemented this rule as the following strategy: for each sequence of three cells, if two are the same and the third is unknown, the third must be the opposite of the other two.
+
+Next, each row and column must have an equal number of suns and moons. I count the number of suns and moons to know how many of each are missing. If the number of missing suns equals the number of unknown cells in a given row or column, then all those cells must be suns. The same logic applies for moons.
+
+The third rule is for symbols. If the edge between two cells has an =, then both cells must have the same value. Conversely, if the edge has an X, the cells must have opposite values. The strategy is simple. If a cell on one side of a symbol is known, the symbol tells us what the other cell is.
+
+### Queens
+
+Queens works like a very simplified version of Sudoku.  Or, more specifically, Killer Sudoku.  I took the Sudoku solver, modified the logic slightly, and was done.
+
+### Zip
+
+Zip was much more challenging to make a solver for than the previous games.  I found a write-up online from someone who also made a solver but I wasn't happy with their approach.  They generate one line from start to finish and backtrack if they get stuck.  It works but it's inefficient and simpler than the approach I take when I solve it by hand.
+
+My approach is to look ahead and deliberately avoid cells I think I'll need for future sections of the path.  It's easy to accidentally close off future points and a simple solver would waste a significant amount of time exploring dead ends before backtracking.  By looking ahead, I could make more informed decisions and reduce the number of backtracks required, ultimately making the solver more efficient.  I implemented this approach in my solver by having it make separate paths from every end point and iterate all of them at the same time.
+
+## Wend
+
+Wend is another puzzle game that required a unique approach for the solver.  It involves finding a set of words on a grid of letters, with the only clue being the length of each word.  I already had an old Scrabble word list that I could use.  First, the solver loads the word list into memory and removes all words that do not match the required lengths or contain letters that are not present on the grid.  Next, it iterates through the grid, looking for paths that match the words in the filtered list, effectively finding all possible word placements on the board.  Finally, it runs a DFS search through the list of valid words, trying to place them on the board in a way that satisfies all constraints.
+
+## Patches
+
+Patches was a challenge to make a solver for, but not because the game was particularly hard to solve.  The difficulty came from trying to reliably read the numbers from the game's interface.  The game has a light background, dark patches, and light numbers.  It took a while to find a set of pre-processing steps that produced a readable image for the OCR to interpret accurately.  I ended up having to extract the contours for the numbers and redraw them before passing them to the OCR.  Double digit numbers had the digits too close together, so I had to separate those too.
+
+Once the program could reliably read the numbers from the game's interface, the solver could focus on the actual logic.  First it would first generate all possible combinations of height and width for each patch.  Next it would generate all valid placements for each patch on the board.  Finally, it would search through all possible configurations to find one that filled the board.
+
+## Pinpoint and Crossclimb
+
+I have no plans to make solvers for Pinpoint and Crossclimb.  Both games give clues in plain English, and I don't have hardware capable of running an LLM to try and interpret them automatically, or an API key to access one.
