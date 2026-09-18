@@ -28,7 +28,9 @@ import { latestPosts } from "@/utils/content";
         {
           latestPosts
             .slice(2)
-            .map((post) => <Postlist post={post} aspect="square" />)
+            .map((post) => (
+              <Postlist post={post} aspect="landscape-responsive" />
+            ))
         }
       </div>
     </main>
