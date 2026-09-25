@@ -5,10 +5,8 @@ publishDate: "2026-09-10T12:00:00.000"
 image: "../../assets/project/linkedin-games/sudoku-win.png"
 category: "programming"
 tags: [python, automation]
-priority: 4
+priority: 5
 ---
-
-This page is actively being worked on.  I plan on adding videos of each solver in the next day or two.
 
 Puzzle games are my favorite type of games to automate. I find the process of learning how to solve a puzzle and then picking apart my thoughts so I can break them down into steps a computer can follow to be genuinely fun and engaging. When my wife showed me that LinkedIn had a few daily games, I thought it would be a good little challenge to automate the process of reading them, solving them, and entering the solution.
 
@@ -17,6 +15,17 @@ Reading each game was fairly straightforward with computer vision.  Using tools 
 Entering the solution was similarly easy.  Using the locations of each cell that were determined when the game was read, the program simply had to perform mouse and keyboard controls to enter the solution.  I'm not sure what level of bot detection LinkedIn employs for these games, but I wasn't willing to risk my account for a quick project.  Instead I created the 'human-input' python library. This library allows for simulating human-like interactions with the computer, making it safer to automate tasks without triggering bot detection mechanisms.
 
 ### Sudoku
+
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  class="md:w-1/2 rounded-lg mx-auto"
+>
+  <source src="/videos/linkedin-games/sudoku.mp4" type="video/mp4" />
+</video>
 
 Sudoku is an interesting game to make a solver for because theory and practice differ quite dramatically.  In theory, sudoku puzzles only have one solution and can be solved without having to guess and check.  There are a finite set of strategies that can be applied to solve any puzzle logically.  In practice, however, this is far easier said than done.
 
@@ -28,15 +37,37 @@ It was a long process to research all the different strategies, only to end up m
 
 ### Tango
 
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  class="md:w-1/2 rounded-lg mx-auto"
+>
+  <source src="/videos/linkedin-games/tango.mp4" type="video/mp4" />
+</video>
+
 The process for solving tango was very similar to Sudoku.  Apply basic strategies until stuck, then make a guess and keep going.  
 
-The first rule of tango is you can't have three suns or moons in a row. I implemented this rule as the following strategy: for each sequence of three cells, if two are the same and the third is unknown, the third must be the opposite of the other two.
+The first rule of tango is you can't have three suns or moons in a row. In other words, for each sequence of three cells, if two are the same and the third is unknown, the third must be the opposite of the other two.
 
-Next, each row and column must have an equal number of suns and moons. I count the number of suns and moons to know how many of each are missing. If the number of missing suns equals the number of unknown cells in a given row or column, then all those cells must be suns. The same logic applies for moons.
+Next, each row and column must have an equal number of suns and moons. The program counts the number of suns and moons to know how many of each are missing. If the number of missing suns equals the number of unknown cells in a given row or column, then all those cells must be suns. The same logic applies for moons.
 
-The third rule is for symbols. If the edge between two cells has an =, then both cells must have the same value. Conversely, if the edge has an X, the cells must have opposite values. The strategy is simple. If a cell on one side of a symbol is known, the symbol tells us what the other cell is.
+The third rule is for symbols. If the edge between two cells has an =, then both cells must have the same value. Conversely, if the edge has an X, the cells must have opposite values. Implementation is simple. If a cell on one side of a symbol is known, the symbol tells us what the other cell is.
 
 ### Queens
+
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  class="md:w-1/2 rounded-lg mx-auto"
+>
+  <source src="/videos/linkedin-games/queens.mp4" type="video/mp4" />
+</video>
 
 Queens works like a very simplified version of Sudoku.  Or, more specifically, Killer Sudoku.  I took the Sudoku solver, modified the logic slightly, and was done.
 
@@ -47,6 +78,17 @@ Zip was much more challenging to make a solver for than the previous games.  I f
 My approach is to look ahead and deliberately avoid cells I think I'll need for future sections of the path.  It's easy to accidentally close off future points and a simple solver would waste a significant amount of time exploring dead ends before backtracking.  By looking ahead, I could make more informed decisions and reduce the number of backtracks required, ultimately making the solver more efficient.  I implemented this approach in my solver by having it make separate paths from every end point and iterate all of them at the same time.
 
 ## Wend
+
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  class="md:w-1/2 rounded-lg mx-auto"
+>
+  <source src="/videos/linkedin-games/wend.mp4" type="video/mp4" />
+</video>
 
 Wend is another puzzle game that required a unique approach for the solver.  It involves finding a set of words on a grid of letters, with the only clue being the length of each word.  I already had an old Scrabble word list that I could use.  First, the solver loads the word list into memory and removes all words that do not match the required lengths or contain letters that are not present on the grid.  Next, it iterates through the grid, looking for paths that match the words in the filtered list, effectively finding all possible word placements on the board.  Finally, it runs a DFS search through the list of valid words, trying to place them on the board in a way that satisfies all constraints.
 
